@@ -10,7 +10,8 @@ import { UserResolver } from "./resolvers/user";
 import redis from 'redis';
 import session from 'express-session';
 import connectRedis from 'connect-redis';
-import {MyContext} from "./types";
+import { MyContext } from "./types";
+import cors from "cors";
 
 const main = async () => {
   const orm = await MikroORM.init(mikroOrmConfig);
@@ -18,13 +19,20 @@ const main = async () => {
 
   const app = express();
 
-  const RedisSore = connectRedis(session);
+  const RedisStore = connectRedis(session);
   const redisClient = redis.createClient();
+
+  app.use(
+    cors({
+      origin: 'http://localhost:4200',
+      credentials: true
+    })
+  )
 
   app.use(
     session({
       name: 'qid',
-      store: new RedisSore({
+      store: new RedisStore({
         client: redisClient,
         disableTouch: true,
       }),
@@ -48,7 +56,10 @@ const main = async () => {
     context: ({ req, res}): MyContext => ({ em: orm.em, req, res }),
   });
 
-  apolloServer.applyMiddleware({ app });
+  apolloServer.applyMiddleware({
+    app,
+    cors: false
+  });
 
   app.listen(port, () => {
     console.log(`server started, listening ${port} port`);

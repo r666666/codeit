@@ -1,0 +1,19 @@
+@import 'src/assets/sass/variables';
+
+:host {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: toRem(30px);
+  background-color: #868686;
+
+  .nav-group {
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+
+    .nav-item {
+      width: 100%;
+    }
+  }
+}

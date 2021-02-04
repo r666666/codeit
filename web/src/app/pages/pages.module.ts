@@ -7,11 +7,13 @@ import { MatInputModule } from '@angular/material/input';
 import { ComponentsModule } from '../components/components.module';
 import { PageDashboard } from './dashboard/page-dashboard.component';
 import { PageRegister } from './register/page-register.component';
+import { PageLogin } from './login/page-login.component';
 
 @NgModule({
   declarations: [
   PageDashboard,
   PageRegister,
+  PageLogin,
   ],
   imports: [
     CommonModule,

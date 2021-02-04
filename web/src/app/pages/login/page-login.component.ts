@@ -3,20 +3,20 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { Apollo } from "apollo-angular";
-import { RegisterGQL } from 'src/generated/graphql';
+import { LoginGQL } from 'src/generated/graphql';
 
 @Component({
-  selector: 'app-register',
-  templateUrl: './page-register.component.html',
-  styleUrls: ['./page-register.component.scss']
+  selector: 'app-login',
+  templateUrl: './page-login.component.html',
+  styleUrls: ['./page-login.component.scss']
 })
-export class PageRegister implements OnInit {
+export class PageLogin implements OnInit {
   form: FormGroup;
 
   constructor(
     private fb: FormBuilder,
     private apollo: Apollo,
-    private register: RegisterGQL,
+    private login: LoginGQL,
     route: ActivatedRoute,
     private router: Router,
   ) {}
@@ -33,11 +33,12 @@ export class PageRegister implements OnInit {
   }
 
   async submitForm() {
-    this.register.mutate({ options: this.form.value }).subscribe(
+    this.login.mutate({ options: this.form.value },
+      { refetchQueries: [this.login.document.toString()]}).subscribe(
       value => {
-        if (value.data?.register.errors) {
-          console.log(value.data.register.errors);
-        } else if (value.data?.register.user) {
+        if (value.data?.login.errors) {
+          console.log(value.data.login.errors);
+        } else if (value.data?.login.user) {
           this.router.navigate(['/']);
         }
       }

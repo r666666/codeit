@@ -1,0 +1,7 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.USER_COOKIE = exports.port = exports.__prod__ = void 0;
+exports.__prod__ = process.env.NODE_ENV === 'production';
+exports.port = 4000;
+exports.USER_COOKIE = 'qid';
+//# sourceMappingURL=constants.js.map

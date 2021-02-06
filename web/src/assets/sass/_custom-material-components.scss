@@ -1,0 +1,15 @@
+@import './variables';
+@import '~@angular/material/theming';
+
+$meanChan-primary: mat-palette($palette);
+$meanChan-accent: mat-palette($accent-palette, A200, A100, A400);
+$meanChan-warn: mat-palette($mat-red);
+$meanChan-theme: mat-light-theme($meanChan-primary, $meanChan-accent, $meanChan-warn);
+
+$custom-typography: mat-typography-config(
+  $font-family: $main-ff,
+  $body-1: mat-typography-level(14px, 22px, 400)
+);
+
+@include mat-core($custom-typography);
+@include angular-material-theme($meanChan-theme);

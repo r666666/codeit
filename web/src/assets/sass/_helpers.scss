@@ -1,0 +1,12 @@
+.form-wrap {
+  display: flex;
+  flex-direction: column;
+  min-width: toRem(300px);
+}
+
+.no-style {
+  background: none;
+  border: 0;
+  outline: none;
+  padding: 0;
+}

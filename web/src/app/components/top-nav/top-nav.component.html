@@ -1,19 +1,16 @@
 <div class="nav-group">
   <div class="nav-item">
-    <span
-      class="username"
-      *ngIf="user && user.username; else anonymous"
-    >
-      {{ user.username }}
-    </span>
-    <ng-template #anonymous>
-      <a routerLink="/login">Login</a>
-      <a routerLink="/register">Register</a>
-    </ng-template>
   </div>
 </div>
 <div class="nav-group">
   <div class="nav-item">
-
+    <span class="username" *ngIf="user && user.username; else anonymous">
+      <button (click)="handleLogout()" class="no-style mr-4">Logout</button>
+      {{ user.username }}
+    </span>
+    <ng-template #anonymous>
+      <a class="mr-4" routerLink="/login">Login</a>
+      <a routerLink="/register">Register</a>
+    </ng-template>
   </div>
 </div>

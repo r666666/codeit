@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { Apollo } from "apollo-angular";
-import { RegisterGQL } from 'src/generated/graphql';
+import {MeGQL, RegisterGQL} from 'src/generated/graphql';
 
 @Component({
   selector: 'app-register',
@@ -15,7 +14,7 @@ export class PageRegister implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private apollo: Apollo,
+    private me : MeGQL,
     private register: RegisterGQL,
     route: ActivatedRoute,
     private router: Router,
@@ -33,7 +32,16 @@ export class PageRegister implements OnInit {
   }
 
   async submitForm() {
-    this.register.mutate({ options: this.form.value }).subscribe(
+    this.register.mutate({ options: this.form.value }, {
+      update: (cache, value) => {
+        if (value.data?.register.user) {
+          cache.writeQuery({
+            query: this.me.document,
+            data: { me: value.data.register.user }
+          });
+        }
+      }
+    }).subscribe(
       value => {
         if (value.data?.register.errors) {
           console.log(value.data.register.errors);

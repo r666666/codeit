@@ -51,6 +51,7 @@ export type Mutation = {
   deletePost: Scalars['Boolean'];
   register: UserResponse;
   login: UserResponse;
+  logout: Scalars['Boolean'];
 };
 
 
@@ -96,6 +97,11 @@ export type UsernamePasswordInput = {
   password: Scalars['String'];
 };
 
+export type DefaultUserFragment = (
+  { __typename?: 'User' }
+  & Pick<User, 'id' | 'username'>
+);
+
 export type LoginMutationVariables = Exact<{
   options: UsernamePasswordInput;
 }>;
@@ -110,9 +116,17 @@ export type LoginMutation = (
       & Pick<FieldError, 'field' | 'message'>
     )>>, user?: Maybe<(
       { __typename?: 'User' }
-      & Pick<User, 'id' | 'username'>
+      & DefaultUserFragment
     )> }
   ) }
+);
+
+export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type LogoutMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'logout'>
 );
 
 export type RegisterMutationVariables = Exact<{
@@ -129,7 +143,7 @@ export type RegisterMutation = (
       & Pick<FieldError, 'field' | 'message'>
     )>>, user?: Maybe<(
       { __typename?: 'User' }
-      & Pick<User, 'id' | 'username'>
+      & DefaultUserFragment
     )> }
   ) }
 );
@@ -141,10 +155,16 @@ export type MeQuery = (
   { __typename?: 'Query' }
   & { me?: Maybe<(
     { __typename?: 'User' }
-    & Pick<User, 'id' | 'username'>
+    & DefaultUserFragment
   )> }
 );
 
+export const DefaultUserFragmentDoc = gql`
+    fragment DefaultUser on User {
+  id
+  username
+}
+    `;
 export const LoginDocument = gql`
     mutation Login($options: UsernamePasswordInput!) {
   login(options: $options) {
@@ -153,18 +173,33 @@ export const LoginDocument = gql`
       message
     }
     user {
-      id
-      username
+      ...DefaultUser
     }
   }
 }
-    `;
+    ${DefaultUserFragmentDoc}`;
 
   @Injectable({
     providedIn: 'root'
   })
   export class LoginGQL extends Apollo.Mutation<LoginMutation, LoginMutationVariables> {
     document = LoginDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const LogoutDocument = gql`
+    mutation Logout {
+  logout
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class LogoutGQL extends Apollo.Mutation<LogoutMutation, LogoutMutationVariables> {
+    document = LogoutDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
@@ -178,12 +213,11 @@ export const RegisterDocument = gql`
       message
     }
     user {
-      id
-      username
+      ...DefaultUser
     }
   }
 }
-    `;
+    ${DefaultUserFragmentDoc}`;
 
   @Injectable({
     providedIn: 'root'
@@ -198,11 +232,10 @@ export const RegisterDocument = gql`
 export const MeDocument = gql`
     query Me {
   me {
-    id
-    username
+    ...DefaultUser
   }
 }
-    `;
+    ${DefaultUserFragmentDoc}`;
 
   @Injectable({
     providedIn: 'root'

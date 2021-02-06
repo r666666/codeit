@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { Apollo } from "apollo-angular";
 import { LoginGQL } from 'src/generated/graphql';
+import { MeGQL } from 'src/generated/graphql';
 
 @Component({
   selector: 'app-login',
@@ -15,8 +15,8 @@ export class PageLogin implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private apollo: Apollo,
     private login: LoginGQL,
+    private me : MeGQL,
     route: ActivatedRoute,
     private router: Router,
   ) {}
@@ -33,8 +33,16 @@ export class PageLogin implements OnInit {
   }
 
   async submitForm() {
-    this.login.mutate({ options: this.form.value },
-      { refetchQueries: [this.login.document.toString()]}).subscribe(
+    this.login.mutate({ options: this.form.value }, {
+      update: (cache, value) => {
+        if (value.data?.login.user) {
+          cache.writeQuery({
+            query: this.me.document,
+            data: { me: value.data.login.user }
+          });
+        }
+      }
+    }).subscribe(
       value => {
         if (value.data?.login.errors) {
           console.log(value.data.login.errors);

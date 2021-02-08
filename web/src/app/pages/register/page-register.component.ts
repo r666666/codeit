@@ -26,6 +26,7 @@ export class PageRegister implements OnInit {
 
   initForm() {
     this.form = this.fb.group({
+      email: ['', Validators.required],
       username: ['', Validators.required],
       password: ['', Validators.required]
     });

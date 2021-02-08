@@ -33,6 +33,7 @@ export class PageLogin implements OnInit {
   }
 
   async submitForm() {
+    this.form.value.email = '';
     this.login.mutate({ options: this.form.value }, {
       update: (cache, value) => {
         if (value.data?.login.user) {

@@ -3,11 +3,11 @@ import express from 'express';
 import { MikroORM } from '@mikro-orm/core';
 import { ApolloServer } from 'apollo-server-express';
 import { buildSchema } from 'type-graphql';
-import { __prod__, port, USER_COOKIE } from './constants';
+import { __prod__, SERVER_PORT, USER_COOKIE, WEB_URL } from './constants';
 import mikroOrmConfig from './mikro-orm.config';
 import { PostResolver } from './resolvers/post';
 import { UserResolver } from "./resolvers/user";
-import redis from 'redis';
+import Redis from 'ioredis';
 import session from 'express-session';
 import connectRedis from 'connect-redis';
 import { MyContext } from "./types";
@@ -20,11 +20,11 @@ const main = async () => {
   const app = express();
 
   const RedisStore = connectRedis(session);
-  const redisClient = redis.createClient();
+  const redis = new Redis();
 
   app.use(
     cors({
-      origin: 'http://localhost:4200',
+      origin: WEB_URL,
       credentials: true
     })
   )
@@ -33,7 +33,7 @@ const main = async () => {
     session({
       name: USER_COOKIE,
       store: new RedisStore({
-        client: redisClient,
+        client: redis,
         disableTouch: true,
       }),
       cookie: {
@@ -53,7 +53,7 @@ const main = async () => {
       resolvers: [PostResolver, UserResolver],
       validate: false,
     }),
-    context: ({ req, res}): MyContext => ({ em: orm.em, req, res }),
+    context: ({ req, res}): MyContext => ({ em: orm.em, req, res, redis }),
   });
 
   apolloServer.applyMiddleware({
@@ -61,8 +61,8 @@ const main = async () => {
     cors: false
   });
 
-  app.listen(port, () => {
-    console.log(`server started, listening ${port} port`);
+  app.listen(SERVER_PORT, () => {
+    console.log(`server started, listening ${SERVER_PORT} port`);
   })
 }
 

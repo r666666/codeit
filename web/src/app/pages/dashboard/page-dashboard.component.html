@@ -1,1 +1,6 @@
 <p>dashboard works!</p>
+
+<div *ngFor="let post of posts">
+  <span class="mr-4">{{ post.id }}</span>
+  <span>{{ post.title }}</span>
+</div>

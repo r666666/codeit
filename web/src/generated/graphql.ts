@@ -42,6 +42,7 @@ export type User = {
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
   username: Scalars['String'];
+  email: Scalars['String'];
 };
 
 export type Mutation = {
@@ -49,6 +50,8 @@ export type Mutation = {
   createPost: Post;
   updatePost?: Maybe<Post>;
   deletePost: Scalars['Boolean'];
+  changePassword: UserResponse;
+  forgotPassword: Scalars['Boolean'];
   register: UserResponse;
   login: UserResponse;
   logout: Scalars['Boolean'];
@@ -68,6 +71,17 @@ export type MutationUpdatePostArgs = {
 
 export type MutationDeletePostArgs = {
   id: Scalars['Float'];
+};
+
+
+export type MutationChangePasswordArgs = {
+  newPassword: Scalars['String'];
+  token: Scalars['String'];
+};
+
+
+export type MutationForgotPasswordArgs = {
+  email: Scalars['String'];
 };
 
 
@@ -93,13 +107,54 @@ export type FieldError = {
 };
 
 export type UsernamePasswordInput = {
+  email: Scalars['String'];
   username: Scalars['String'];
   password: Scalars['String'];
 };
 
-export type DefaultUserFragment = (
+export type FragmentErrorFragment = (
+  { __typename?: 'FieldError' }
+  & Pick<FieldError, 'field' | 'message'>
+);
+
+export type FragmentUserFragment = (
   { __typename?: 'User' }
-  & Pick<User, 'id' | 'username'>
+  & Pick<User, 'id' | 'email' | 'username'>
+);
+
+export type FragmentUserResponseFragment = (
+  { __typename?: 'UserResponse' }
+  & { errors?: Maybe<Array<(
+    { __typename?: 'FieldError' }
+    & FragmentErrorFragment
+  )>>, user?: Maybe<(
+    { __typename?: 'User' }
+    & FragmentUserFragment
+  )> }
+);
+
+export type ChangePasswordMutationVariables = Exact<{
+  token: Scalars['String'];
+  newPassword: Scalars['String'];
+}>;
+
+
+export type ChangePasswordMutation = (
+  { __typename?: 'Mutation' }
+  & { changePassword: (
+    { __typename?: 'UserResponse' }
+    & FragmentUserResponseFragment
+  ) }
+);
+
+export type ForgotPasswordMutationVariables = Exact<{
+  email: Scalars['String'];
+}>;
+
+
+export type ForgotPasswordMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'forgotPassword'>
 );
 
 export type LoginMutationVariables = Exact<{
@@ -111,13 +166,7 @@ export type LoginMutation = (
   { __typename?: 'Mutation' }
   & { login: (
     { __typename?: 'UserResponse' }
-    & { errors?: Maybe<Array<(
-      { __typename?: 'FieldError' }
-      & Pick<FieldError, 'field' | 'message'>
-    )>>, user?: Maybe<(
-      { __typename?: 'User' }
-      & DefaultUserFragment
-    )> }
+    & FragmentUserResponseFragment
   ) }
 );
 
@@ -138,13 +187,7 @@ export type RegisterMutation = (
   { __typename?: 'Mutation' }
   & { register: (
     { __typename?: 'UserResponse' }
-    & { errors?: Maybe<Array<(
-      { __typename?: 'FieldError' }
-      & Pick<FieldError, 'field' | 'message'>
-    )>>, user?: Maybe<(
-      { __typename?: 'User' }
-      & DefaultUserFragment
-    )> }
+    & FragmentUserResponseFragment
   ) }
 );
 
@@ -155,29 +198,86 @@ export type MeQuery = (
   { __typename?: 'Query' }
   & { me?: Maybe<(
     { __typename?: 'User' }
-    & DefaultUserFragment
+    & FragmentUserFragment
   )> }
 );
 
-export const DefaultUserFragmentDoc = gql`
-    fragment DefaultUser on User {
+export type PostsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type PostsQuery = (
+  { __typename?: 'Query' }
+  & { posts: Array<(
+    { __typename?: 'Post' }
+    & Pick<Post, 'id' | 'createdAt' | 'updatedAt' | 'title'>
+  )> }
+);
+
+export const FragmentErrorFragmentDoc = gql`
+    fragment FragmentError on FieldError {
+  field
+  message
+}
+    `;
+export const FragmentUserFragmentDoc = gql`
+    fragment FragmentUser on User {
   id
+  email
   username
 }
     `;
+export const FragmentUserResponseFragmentDoc = gql`
+    fragment FragmentUserResponse on UserResponse {
+  errors {
+    ...FragmentError
+  }
+  user {
+    ...FragmentUser
+  }
+}
+    ${FragmentErrorFragmentDoc}
+${FragmentUserFragmentDoc}`;
+export const ChangePasswordDocument = gql`
+    mutation ChangePassword($token: String!, $newPassword: String!) {
+  changePassword(token: $token, newPassword: $newPassword) {
+    ...FragmentUserResponse
+  }
+}
+    ${FragmentUserResponseFragmentDoc}`;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class ChangePasswordGQL extends Apollo.Mutation<ChangePasswordMutation, ChangePasswordMutationVariables> {
+    document = ChangePasswordDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const ForgotPasswordDocument = gql`
+    mutation ForgotPassword($email: String!) {
+  forgotPassword(email: $email)
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class ForgotPasswordGQL extends Apollo.Mutation<ForgotPasswordMutation, ForgotPasswordMutationVariables> {
+    document = ForgotPasswordDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
 export const LoginDocument = gql`
     mutation Login($options: UsernamePasswordInput!) {
   login(options: $options) {
-    errors {
-      field
-      message
-    }
-    user {
-      ...DefaultUser
-    }
+    ...FragmentUserResponse
   }
 }
-    ${DefaultUserFragmentDoc}`;
+    ${FragmentUserResponseFragmentDoc}`;
 
   @Injectable({
     providedIn: 'root'
@@ -208,16 +308,10 @@ export const LogoutDocument = gql`
 export const RegisterDocument = gql`
     mutation Register($options: UsernamePasswordInput!) {
   register(options: $options) {
-    errors {
-      field
-      message
-    }
-    user {
-      ...DefaultUser
-    }
+    ...FragmentUserResponse
   }
 }
-    ${DefaultUserFragmentDoc}`;
+    ${FragmentUserResponseFragmentDoc}`;
 
   @Injectable({
     providedIn: 'root'
@@ -232,16 +326,37 @@ export const RegisterDocument = gql`
 export const MeDocument = gql`
     query Me {
   me {
-    ...DefaultUser
+    ...FragmentUser
   }
 }
-    ${DefaultUserFragmentDoc}`;
+    ${FragmentUserFragmentDoc}`;
 
   @Injectable({
     providedIn: 'root'
   })
   export class MeGQL extends Apollo.Query<MeQuery, MeQueryVariables> {
     document = MeDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const PostsDocument = gql`
+    query Posts {
+  posts {
+    id
+    createdAt
+    updatedAt
+    title
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class PostsGQL extends Apollo.Query<PostsQuery, PostsQueryVariables> {
+    document = PostsDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);

@@ -3,6 +3,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { MeGQL, LogoutGQL } from 'src/generated/graphql';
+import { IUser } from '../../interfaces/user';
 
 @Component({
   selector: 'app-top-nav',
@@ -10,7 +11,7 @@ import { MeGQL, LogoutGQL } from 'src/generated/graphql';
   styleUrls: ['./top-nav.component.scss']
 })
 export class TopNavComponent implements OnInit, OnDestroy {
-  user: { id: number, username: string };
+  user: IUser;
   querySubscription: Subscription;
 
   constructor(

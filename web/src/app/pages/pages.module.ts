@@ -8,12 +8,16 @@ import { ComponentsModule } from '../components/components.module';
 import { PageDashboard } from './dashboard/page-dashboard.component';
 import { PageRegister } from './register/page-register.component';
 import { PageLogin } from './login/page-login.component';
+import { PageChangePassword } from './change-password/change-password.component';
+import { PageForgotPassword } from './forgot-password/page-forgot-password.component';
 
 @NgModule({
   declarations: [
-  PageDashboard,
-  PageRegister,
-  PageLogin,
+    PageDashboard,
+    PageRegister,
+    PageLogin,
+    PageChangePassword,
+    PageForgotPassword,
   ],
   imports: [
     CommonModule,

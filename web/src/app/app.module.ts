@@ -23,9 +23,7 @@ import { GraphQLModule } from './graphql.module';
     PagesModule,
     GraphQLModule
   ],
-  providers: [
-    { provide: LocationStrategy, useClass: HashLocationStrategy },
-  ],
+  providers: [],
   bootstrap: [ AppComponent ]
 })
 export class AppModule { }

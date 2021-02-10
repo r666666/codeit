@@ -91,7 +91,8 @@ export type MutationRegisterArgs = {
 
 
 export type MutationLoginArgs = {
-  options: UsernamePasswordInput;
+  password: Scalars['String'];
+  username: Scalars['String'];
 };
 
 export type UserResponse = {
@@ -158,7 +159,8 @@ export type ForgotPasswordMutation = (
 );
 
 export type LoginMutationVariables = Exact<{
-  options: UsernamePasswordInput;
+  username: Scalars['String'];
+  password: Scalars['String'];
 }>;
 
 
@@ -272,8 +274,8 @@ export const ForgotPasswordDocument = gql`
     }
   }
 export const LoginDocument = gql`
-    mutation Login($options: UsernamePasswordInput!) {
-  login(options: $options) {
+    mutation Login($username: String!, $password: String!) {
+  login(username: $username, password: $password) {
     ...FragmentUserResponse
   }
 }

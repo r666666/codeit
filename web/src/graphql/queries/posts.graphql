@@ -1,8 +1,11 @@
 query Posts {
   posts {
     id
+    title
+    text
+    points
+    creatorId
     createdAt
     updatedAt
-    title
   }
 }

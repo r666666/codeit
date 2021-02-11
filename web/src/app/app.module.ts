@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 import { AppComponent } from './app.component';
 import { ROUTES, RoutingModule } from './routing/routing.module';
@@ -26,4 +25,4 @@ import { GraphQLModule } from './graphql.module';
   providers: [],
   bootstrap: [ AppComponent ]
 })
-export class AppModule { }
+export class AppModule {}

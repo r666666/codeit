@@ -10,6 +10,7 @@ import { PageRegister } from './register/page-register.component';
 import { PageLogin } from './login/page-login.component';
 import { PageChangePassword } from './change-password/change-password.component';
 import { PageForgotPassword } from './forgot-password/page-forgot-password.component';
+import { PageCreatePost } from './create-post/page-create-post.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { PageForgotPassword } from './forgot-password/page-forgot-password.compo
     PageLogin,
     PageChangePassword,
     PageForgotPassword,
+    PageCreatePost,
   ],
   imports: [
     CommonModule,

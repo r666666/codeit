@@ -19,13 +19,13 @@ export class TopNavComponent implements OnInit, OnDestroy {
     private logout: LogoutGQL,
   ) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.querySubscription = this.me.watch().valueChanges.subscribe(({ data }) => {
       this.user = data.me;
     });
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy() {
     this.querySubscription.unsubscribe();
   }
 

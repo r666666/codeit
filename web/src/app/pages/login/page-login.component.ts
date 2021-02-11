@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { LoginGQL } from 'src/generated/graphql';
-import { MeGQL } from 'src/generated/graphql';
+import { MeGQL, LoginGQL } from 'src/generated/graphql';
 
 @Component({
   selector: 'app-login',
@@ -37,7 +36,10 @@ export class PageLogin implements OnInit {
       username: this.form.value.username,
       password: this.form.value.password
     }, {
-      update: (cache, value) => {
+      update: (
+        cache,
+        value
+      ) => {
         if (value.data?.login.user) {
           cache.writeQuery({
             query: this.me.document,

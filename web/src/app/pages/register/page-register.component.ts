@@ -34,7 +34,10 @@ export class PageRegister implements OnInit {
 
   async submitForm() {
     this.register.mutate({ options: this.form.value }, {
-      update: (cache, value) => {
+      update: (
+        cache,
+        value
+      ) => {
         if (value.data?.register.user) {
           cache.writeQuery({
             query: this.me.document,

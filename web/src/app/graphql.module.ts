@@ -21,7 +21,7 @@ export class GraphQLModule {
     private router: Router
   ) {
     this.cache = new InMemoryCache();
-    this.link = httpLink.create({
+    this.link = this.httpLink.create({
       uri: environment.serverAPI,
       withCredentials: true
     });

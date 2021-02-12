@@ -6,7 +6,7 @@ import {
   Mutation,
   ObjectType,
   Resolver,
-  Query
+  Query, Int
 } from "type-graphql";
 import { MyContext } from "../types";
 import { User } from "../entities/User";
@@ -45,6 +45,24 @@ class UserResponse {
 
 @Resolver()
 export class UserResolver {
+  @Query(() => User, { nullable: true })
+  user(@Arg('id', () => Int) id: number) {
+    const user = User.findOne(id);
+
+    if (!user) {
+      return {
+        errors: [
+          {
+            field: "id",
+            message: "can't find user",
+          },
+        ],
+      };
+    }
+
+    return user;
+  }
+
   @Mutation(() => UserResponse)
   async changePassword(
     @Arg('token') token: string,

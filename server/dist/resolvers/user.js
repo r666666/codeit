@@ -76,6 +76,20 @@ UserResponse = __decorate([
     type_graphql_1.ObjectType()
 ], UserResponse);
 let UserResolver = class UserResolver {
+    user(id) {
+        const user = User_1.User.findOne(id);
+        if (!user) {
+            return {
+                errors: [
+                    {
+                        field: "id",
+                        message: "can't find user",
+                    },
+                ],
+            };
+        }
+        return user;
+    }
     changePassword(token, newPassword, { redis, req }) {
         return __awaiter(this, void 0, void 0, function* () {
             const key = constants_1.FORGET_PASSWORD_PREFIX + token;
@@ -196,6 +210,13 @@ let UserResolver = class UserResolver {
         }));
     }
 };
+__decorate([
+    type_graphql_1.Query(() => User_1.User, { nullable: true }),
+    __param(0, type_graphql_1.Arg('id', () => type_graphql_1.Int)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", void 0)
+], UserResolver.prototype, "user", null);
 __decorate([
     type_graphql_1.Mutation(() => UserResponse),
     __param(0, type_graphql_1.Arg('token')),

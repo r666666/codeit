@@ -2,20 +2,60 @@
 
 //Main palette
 $palette: (
-  50 : #e7eaee,
-  100 : #c2cbd4,
-  200 : #9aa8b8,
-  300 : #72859b,
-  400 : #536a85,
-  500 : #355070,
-  600 : #304968,
-  700 : #28405d,
-  800 : #223753,
-  900 : #162741,
-  A100 : #80aeff,
-  A200 : #4d8eff,
-  A400 : #1a6eff,
-  A700 : #005eff,
+  50 : #eeeeee,
+  100 : #d5d5d5,
+  200 : #b9b9b9,
+  300 : #9d9d9d,
+  400 : #888888,
+  500 : #737373,
+  600 : #6b6b6b,
+  700 : #606060,
+  800 : #565656,
+  900 : #434343,
+  A100 : #f6acac,
+  A200 : #f17e7e,
+  A400 : #ff3d3d,
+  A700 : #ff2424,
+  contrast: (
+    50 : #000000,
+    100 : #000000,
+    200 : #000000,
+    300 : #000000,
+    400 : #000000,
+    500 : #ffffff,
+    600 : #ffffff,
+    700 : #ffffff,
+    800 : #ffffff,
+    900 : #ffffff,
+    A100 : #000000,
+    A200 : #000000,
+    A400 : #ffffff,
+    A700 : #ffffff,
+  )
+);
+@function main-palette($key: $palette) {
+  @return map-get($palette, $key);
+}
+@function main-contrast($key: $palette) {
+  @return map-get(map-get($palette, contrast), $key);
+}
+
+//Accent palette
+$accent-palette: (
+  50: #e7eaff,
+  100: #c3cbff,
+  200: #9ba8ff,
+  300: #7385ff,
+  400: #556bff,
+  500: #3751ff,
+  600: #314aff,
+  700: #2a40ff,
+  800: #2337ff,
+  900: #1627ff,
+  A100: #ffffff,
+  A200: #fcfcff,
+  A400: #c9ccff,
+  A700: #afb4ff,
   contrast: (
     50 : #07070c,
     100 : #07070c,
@@ -33,46 +73,6 @@ $palette: (
     A700 : #07070c,
   )
 );
-@function main-palette($key: $palette) {
-  @return map-get($palette, $key);
-}
-@function main-contrast($key: $palette) {
-  @return map-get(map-get($palette, contrast), $key);
-}
-
-//Accent palette
-$accent-palette: (
-  50 : #fcedee,
-  100 : #f7d3d4,
-  200 : #f2b5b7,
-  300 : #ed979a,
-  400 : #e98185,
-  500 : #e56b6f,
-  600 : #e26367,
-  700 : #de585c,
-  800 : #da4e52,
-  900 : #d33c40,
-  A100 : #ffffff,
-  A200 : #ffedee,
-  A400 : #ffbabc,
-  A700 : #ffa1a3,
-  contrast: (
-    50 : #000000,
-    100 : #000000,
-    200 : #000000,
-    300 : #000000,
-    400 : #000000,
-    500 : #ffffff,
-    600 : #ffffff,
-    700 : #ffffff,
-    800 : #ffffff,
-    900 : #ffffff,
-    A100 : #000000,
-    A200 : #000000,
-    A400 : #000000,
-    A700 : #000000,
-  )
-);
 @function accent-palette($key: $accent-palette) {
   @return map-get($accent-palette, $key);
 }
@@ -81,22 +81,24 @@ $accent-palette: (
 }
 
 :root {
-  --main-color: #355070;
-  --main-bg: #F2F4F5;
+  --main-color: #404040;
+  --main-bg: #F2F2F2;
   --boxed-width: 1140px;
 }
-$main-color: #355070;
-$main-bg: #F2F4F5;
+$main-bg: #F2F2F2;
 $boxed-width: 1140px;
+$main-color: #404040;
 
-$success-color: #27AE60;
-$success-contrast: #E3F5EB;
-$info-color: #64B5F6;
-$info-contrast: #000;
-$warning-color: #e9e165;
-$warning-contrast: #000;
-$error-color: #FD4745;
+$success-color: #29CC97;
+$success-contrast: #D4F5EA;
+$info-color: #3751FF;
+$info-contrast: #DDE2FF;
+$warning-color: #FEC400;
+$warning-contrast: #FFEDB2;
+$error-color: #F12B2C;
 $error-contrast: #FFEBEB;
+
+$secondary-color: #737373;
 
 //Main
 $main-fs: 14px;
@@ -106,13 +108,9 @@ $module: 10px;
 $main-lh: ($module * 2 / $main-fs);
 $module-rem: ($module / $main-fs) * 1rem;
 $shape: 15px;
-$shadow: 0 18px 24px rgba(#000,.12);
+$shadow: 0 18px 24px rgba(#000000,.12);
 $shadow-hover: 0px 8px 24px rgba(#000,.12);
 $animation: ease-in-out;
-
-//Second
-$second-ff: $main-ff;
-$secondary-color: #A2A5B2;
 
 //Media
 $max543 : only screen and (max-width: 543px);
@@ -125,14 +123,7 @@ $max1199 : only screen and (max-width: 1199px);
 $min1200 : only screen and (min-width: 1200px);
 
 //Headers
-$headers-ff: $second-ff;
+$headers-ff: $main-ff;
 $headers-fw: 700;
-$header-color: #223753;
-
-//Navbar
-$navbar-bg: #eeeeef;
-$navbar-color: rgba(main-palette(500),.5);
-$vertical-navbar-mini-width: $module-rem * 10;
-$vertical-navbar-width: $module-rem * 24;
-
+$header-color: #262626;
 

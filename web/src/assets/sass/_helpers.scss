@@ -10,3 +10,23 @@
   outline: none;
   padding: 0;
 }
+
+.card {
+  background-color: #BFBFBF;
+  border-radius: toRem(5px);
+  padding: toRem(20px);
+  color: #404040;
+  width: 100%;
+
+  @media #{$max991} {
+    padding: toRem(10px);
+  }
+  &.info {
+    background-color: $info-color;
+    color: $info-contrast;
+
+    .link {
+      color: $info-contrast;
+    }
+  }
+}

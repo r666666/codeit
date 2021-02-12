@@ -8,7 +8,7 @@ import { IPost } from '../../interfaces/post';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './page-dashboard.component.html',
-  styleUrls: ['./page-dashboard.component.sass']
+  styleUrls: ['./page-dashboard.component.scss']
 })
 export class PageDashboard implements OnInit, OnDestroy {
   posts: IPost[];
@@ -19,7 +19,11 @@ export class PageDashboard implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.querySubscription = this.getPosts.watch().valueChanges.subscribe(({ data }) => {
+    this.querySubscription = this.getPosts.watch(
+      {
+        limit: 3
+      }
+    ).valueChanges.subscribe(({ data }) => {
       this.posts = data.posts;
     });
   }

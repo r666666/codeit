@@ -1,0 +1,24 @@
+@import 'src/assets/sass/variables';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  padding: 0 0 0 toRem(30px);
+
+  .header {
+    display: flex;
+    position: relative;
+    padding: toRem(5px) 0;
+    color: #404040;
+
+    .points-wrap {
+      position: absolute;
+      margin-left: toRem(-15px);
+    }
+  }
+  .content {
+    padding: toRem(5px) 0 toRem(10px) 0;
+    color: #262626;
+    font-size: toRem(19px);
+  }
+}

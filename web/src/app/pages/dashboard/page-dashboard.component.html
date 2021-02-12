@@ -1,11 +1,11 @@
-<div class="content-header">
-  <a routerLink="/create-post">Create post</a>
-</div>
+<div class="posts-wrap">
+  <a class="card info create" routerLink="/create-post">
+    <span class="link">Create new post!</span>
+  </a>
 
-<div *ngFor="let post of posts">
-  <span class="mr-2">{{ post.id }}</span>
-  <span class="mr-2">{{ post.title }}</span>
-  <span class="mr-2">{{ post.creatorId }}</span>
-  <span>{{ post.createdAt }}</span>
-  <div>{{ post.text }}</div>
+  <app-post-preview
+    *ngFor="let post of posts"
+    [post]="post"
+    class="card post-preview"
+  ></app-post-preview>
 </div>

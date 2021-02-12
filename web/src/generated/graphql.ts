@@ -20,12 +20,24 @@ export type Query = {
   __typename?: 'Query';
   posts: Array<Post>;
   post?: Maybe<Post>;
+  user?: Maybe<User>;
   me?: Maybe<User>;
+};
+
+
+export type QueryPostsArgs = {
+  cursor?: Maybe<Scalars['String']>;
+  limit: Scalars['Int'];
 };
 
 
 export type QueryPostArgs = {
   id: Scalars['Float'];
+};
+
+
+export type QueryUserArgs = {
+  id: Scalars['Int'];
 };
 
 export type Post = {
@@ -225,7 +237,10 @@ export type MeQuery = (
   )> }
 );
 
-export type PostsQueryVariables = Exact<{ [key: string]: never; }>;
+export type PostsQueryVariables = Exact<{
+  limit: Scalars['Int'];
+  cursor?: Maybe<Scalars['String']>;
+}>;
 
 
 export type PostsQuery = (
@@ -233,6 +248,19 @@ export type PostsQuery = (
   & { posts: Array<(
     { __typename?: 'Post' }
     & Pick<Post, 'id' | 'title' | 'text' | 'points' | 'creatorId' | 'createdAt' | 'updatedAt'>
+  )> }
+);
+
+export type UserQueryVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type UserQuery = (
+  { __typename?: 'Query' }
+  & { user?: Maybe<(
+    { __typename?: 'User' }
+    & FragmentUserFragment
   )> }
 );
 
@@ -389,8 +417,8 @@ export const MeDocument = gql`
     }
   }
 export const PostsDocument = gql`
-    query Posts {
-  posts {
+    query Posts($limit: Int!, $cursor: String) {
+  posts(cursor: $cursor, limit: $limit) {
     id
     title
     text
@@ -407,6 +435,24 @@ export const PostsDocument = gql`
   })
   export class PostsGQL extends Apollo.Query<PostsQuery, PostsQueryVariables> {
     document = PostsDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const UserDocument = gql`
+    query User($id: Int!) {
+  user(id: $id) {
+    ...FragmentUser
+  }
+}
+    ${FragmentUserFragmentDoc}`;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class UserGQL extends Apollo.Query<UserQuery, UserQueryVariables> {
+    document = UserDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);

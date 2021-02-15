@@ -7,6 +7,7 @@ import { HttpLink, HttpLinkHandler } from 'apollo-angular/http';
 import { onError } from '@apollo/client/link/error';
 
 import { environment } from '../environments/environment';
+import { concatPagination } from '@apollo/client/utilities';
 
 @NgModule()
 
@@ -20,7 +21,15 @@ export class GraphQLModule {
     private httpLink: HttpLink,
     private router: Router
   ) {
-    this.cache = new InMemoryCache();
+    this.cache = new InMemoryCache({
+      typePolicies: {
+        Query: {
+          fields: {
+            posts: concatPagination(),
+          }
+        }
+      },
+    });
     this.link = this.httpLink.create({
       uri: environment.serverAPI,
       withCredentials: true

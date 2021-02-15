@@ -42,7 +42,7 @@ PostInput = __decorate([
 let PostResolver = class PostResolver {
     posts(limit, cursor) {
         return __awaiter(this, void 0, void 0, function* () {
-            const realLimit = Math.min(50, limit);
+            const realLimit = limit ? Math.min(50, limit) : undefined;
             const qb = typeorm_1.getConnection()
                 .getRepository(Post_1.Post)
                 .createQueryBuilder('p')
@@ -88,10 +88,10 @@ let PostResolver = class PostResolver {
 };
 __decorate([
     type_graphql_1.Query(() => [Post_1.Post]),
-    __param(0, type_graphql_1.Arg('limit', () => type_graphql_1.Int)),
+    __param(0, type_graphql_1.Arg('limit', () => type_graphql_1.Int, { nullable: true })),
     __param(1, type_graphql_1.Arg('cursor', () => String, { nullable: true })),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number, Object]),
+    __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], PostResolver.prototype, "posts", null);
 __decorate([

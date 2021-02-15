@@ -40,23 +40,19 @@ export class PageCreatePost implements OnInit {
 
   async submitForm() {
     this.createPost.mutate(
-      { input: this.form.value },
-      {
-        update: (
-          cache,
-          value
-        ) => {
-          if (value.data?.createPost) {
-            this.posts.fetch().subscribe(val => {
-              const posts = Object.assign([], val.data.posts);
-              posts.push(value.data.createPost);
+      { input: this.form.value }, {
+        update: (cache, value) => {
+          // if (value.data?.createPost) {
+          //   this.posts.fetch().subscribe(val => {
+          //     const posts = Object.assign([], val.data.posts);
+          //     posts.unshift(value.data.createPost);
 
-              cache.writeQuery({
-                query: this.posts.document,
-                data: { posts }
-              });
-            })
-          }
+          //     cache.writeQuery({
+          //       query: this.posts.document,
+          //       data: { posts }
+          //     });
+          //   })
+          // }
         }
       }).subscribe(
       value => {

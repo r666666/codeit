@@ -11,7 +11,7 @@ import {
 import { Post } from "../entities/Post";
 import { MyContext } from "../types";
 import { isAuth } from "../middleware/isAuth";
-import {getConnection} from "typeorm";
+import { getConnection } from "typeorm";
 
 @InputType()
 class PostInput {
@@ -25,10 +25,10 @@ class PostInput {
 export class PostResolver {
   @Query(() => [Post])
   async posts(
-    @Arg('limit', () => Int) limit: number,
+    @Arg('limit', () => Int, { nullable: true }) limit: number | null,
     @Arg('cursor', () => String, { nullable: true }) cursor: string | null
   ): Promise<Post[]> {
-    const realLimit = Math.min(50, limit);
+    const realLimit = limit ? Math.min(50, limit) : undefined;
     const qb = getConnection()
       .getRepository(Post)
       .createQueryBuilder('p')

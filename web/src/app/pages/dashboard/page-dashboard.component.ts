@@ -1,9 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
-import { Subscription } from 'rxjs';
+import { Apollo, QueryRef } from 'apollo-angular';
 
 import { PostsGQL } from 'src/generated/graphql';
 import { IPost } from '../../interfaces/post';
+import {InMemoryCache} from '@apollo/client/core';
 
 @Component({
   selector: 'app-dashboard',
@@ -12,23 +13,36 @@ import { IPost } from '../../interfaces/post';
 })
 export class PageDashboard implements OnInit, OnDestroy {
   posts: IPost[];
-  querySubscription: Subscription;
+  cursor: any;
+  querySubscription: QueryRef<any>;;
+  cache: InMemoryCache;
 
   constructor(
-    private getPosts: PostsGQL
-  ) {}
+    private getPosts: PostsGQL,
+    private apollo: Apollo
+  ) {
+    this.posts = [];
+    this.cache = new InMemoryCache();
+  }
 
-  ngOnInit(): void {
-    this.querySubscription = this.getPosts.watch(
-      {
-        limit: 3
-      }
-    ).valueChanges.subscribe(({ data }) => {
+  ngOnInit() {
+    this.querySubscription = this.getPosts.watch({ limit: 2 });
+
+    this.querySubscription.valueChanges.subscribe(({ data }) => {
       this.posts = data.posts;
     });
   }
 
-  ngOnDestroy(): void {
-    this.querySubscription.unsubscribe();
+  ngOnDestroy() {
+    this.apollo.client.resetStore();
+  } 
+
+  loadPosts() {
+    this.querySubscription.fetchMore({
+      variables: {
+        limit: 2,
+        cursor: this.posts[this.posts.length-1].createdAt
+      }
+    });
   }
 }

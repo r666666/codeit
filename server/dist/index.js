@@ -26,6 +26,7 @@ const cors_1 = __importDefault(require("cors"));
 const typeorm_1 = require("typeorm");
 const User_1 = require("./entities/User");
 const Post_1 = require("./entities/Post");
+const Vote_1 = require("./entities/Vote");
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
     yield typeorm_1.createConnection({
         type: 'postgres',
@@ -34,7 +35,7 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
         password: 'admin',
         logging: true,
         synchronize: true,
-        entities: [Post_1.Post, User_1.User]
+        entities: [Post_1.Post, User_1.User, Vote_1.Vote]
     });
     const app = express_1.default();
     const RedisStore = connect_redis_1.default(express_session_1.default);

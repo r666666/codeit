@@ -7,7 +7,6 @@ import { HttpLink, HttpLinkHandler } from 'apollo-angular/http';
 import { onError } from '@apollo/client/link/error';
 
 import { environment } from '../environments/environment';
-import { concatPagination } from '@apollo/client/utilities';
 
 @NgModule()
 
@@ -25,7 +24,18 @@ export class GraphQLModule {
       typePolicies: {
         Query: {
           fields: {
-            posts: concatPagination(),
+            posts: {
+              keyArgs: false,
+              merge(existing = [], incoming: any[], field) {
+                if (
+                  !field.variables.limit ||
+                  existing.every((val, index) => val.__ref === incoming[index].__ref)
+                ) {
+                  return [...incoming];
+                }
+                return [...existing, ...incoming];
+              },
+            }
           }
         }
       },

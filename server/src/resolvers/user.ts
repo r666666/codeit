@@ -6,7 +6,7 @@ import {
   Mutation,
   ObjectType,
   Resolver,
-  Query, Int
+  Query, Int, FieldResolver, Root
 } from "type-graphql";
 import { MyContext } from "../types";
 import { User } from "../entities/User";
@@ -43,8 +43,18 @@ class UserResponse {
   user?: User;
 }
 
-@Resolver()
+@Resolver(User)
 export class UserResolver {
+  @FieldResolver(() => String)
+  email(@Root() user: User, @Ctx() { req }: MyContext) {
+    // if current user own this email - show it
+    if (req.session.userId === user.id) {
+      return user.email;
+    }
+
+    return '';
+  }
+
   @Query(() => User, { nullable: true })
   user(@Arg('id', () => Int) id: number) {
     const user = User.findOne(id);

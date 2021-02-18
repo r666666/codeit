@@ -27,7 +27,7 @@ export type Query = {
 
 export type QueryPostsArgs = {
   cursor?: Maybe<Scalars['String']>;
-  limit?: Maybe<Scalars['Int']>;
+  limit: Scalars['Int'];
 };
 
 
@@ -46,7 +46,9 @@ export type Post = {
   title: Scalars['String'];
   text: Scalars['String'];
   points: Scalars['Float'];
+  voteStatus?: Maybe<Scalars['Int']>;
   creatorId: Scalars['Float'];
+  creator: User;
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
 };
@@ -62,6 +64,7 @@ export type User = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  vote: Scalars['Boolean'];
   createPost: Post;
   updatePost?: Maybe<Post>;
   deletePost: Scalars['Boolean'];
@@ -70,6 +73,12 @@ export type Mutation = {
   register: UserResponse;
   login: UserResponse;
   logout: Scalars['Boolean'];
+};
+
+
+export type MutationVoteArgs = {
+  value: Scalars['Int'];
+  postId: Scalars['Int'];
 };
 
 
@@ -226,6 +235,17 @@ export type RegisterMutation = (
   ) }
 );
 
+export type VoteMutationVariables = Exact<{
+  value: Scalars['Int'];
+  postId: Scalars['Int'];
+}>;
+
+
+export type VoteMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'vote'>
+);
+
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -238,7 +258,7 @@ export type MeQuery = (
 );
 
 export type PostsQueryVariables = Exact<{
-  limit?: Maybe<Scalars['Int']>;
+  limit: Scalars['Int'];
   cursor?: Maybe<Scalars['String']>;
 }>;
 
@@ -247,7 +267,11 @@ export type PostsQuery = (
   { __typename?: 'Query' }
   & { posts: Array<(
     { __typename?: 'Post' }
-    & Pick<Post, 'id' | 'title' | 'text' | 'points' | 'creatorId' | 'createdAt' | 'updatedAt'>
+    & Pick<Post, 'id' | 'title' | 'text' | 'points' | 'creatorId' | 'voteStatus' | 'createdAt' | 'updatedAt'>
+    & { creator: (
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'username'>
+    ) }
   )> }
 );
 
@@ -398,6 +422,22 @@ export const RegisterDocument = gql`
       super(apollo);
     }
   }
+export const VoteDocument = gql`
+    mutation Vote($value: Int!, $postId: Int!) {
+  vote(value: $value, postId: $postId)
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class VoteGQL extends Apollo.Mutation<VoteMutation, VoteMutationVariables> {
+    document = VoteDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
 export const MeDocument = gql`
     query Me {
   me {
@@ -417,15 +457,20 @@ export const MeDocument = gql`
     }
   }
 export const PostsDocument = gql`
-    query Posts($limit: Int, $cursor: String) {
+    query Posts($limit: Int!, $cursor: String) {
   posts(cursor: $cursor, limit: $limit) {
     id
     title
     text
     points
     creatorId
+    voteStatus
     createdAt
     updatedAt
+    creator {
+      id
+      username
+    }
   }
 }
     `;

@@ -10,8 +10,9 @@ import session from 'express-session';
 import connectRedis from 'connect-redis';
 import cors from "cors";
 import { createConnection } from 'typeorm';
-import {User} from "./entities/User";
-import {Post} from "./entities/Post";
+import { User } from './entities/User';
+import { Post } from './entities/Post';
+import { Vote } from './entities/Vote';
 
 const main = async () => {
   await createConnection({
@@ -21,7 +22,7 @@ const main = async () => {
     password: 'admin',
     logging: true,
     synchronize: true,
-    entities: [Post, User]
+    entities: [Post, User, Vote]
   });
 
   const app = express();

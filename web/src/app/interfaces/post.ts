@@ -1,9 +1,13 @@
+import { IUser } from './user';
+
 export interface IPost {
   id: number;
   title: string;
   text: string;
   points: number;
-  creatorId: number;
-  createdAt: string;
-  updatedAt: string;
+  voteStatus?: number;
+  creator?: IUser;
+  creatorId?: number;
+  createdAt?: string;
+  updatedAt?: string;
 }

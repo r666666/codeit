@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import { ForgotPasswordGQL } from "../../../generated/graphql";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+
+import { ForgotPasswordGQL, MeGQL } from "../../../generated/graphql";
 
 @Component({
   selector: 'app-forgot-password',
@@ -12,7 +13,7 @@ export class PageForgotPassword implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private forgotPassword: ForgotPasswordGQL
+    private forgotPassword: ForgotPasswordGQL,
   ) { }
 
   ngOnInit(): void {

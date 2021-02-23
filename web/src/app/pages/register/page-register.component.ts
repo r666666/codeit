@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 
-import {MeGQL, RegisterGQL} from 'src/generated/graphql';
+import { MeGQL, RegisterGQL } from 'src/generated/graphql';
 
 @Component({
   selector: 'app-register',
@@ -14,11 +14,10 @@ export class PageRegister implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private me : MeGQL,
     private register: RegisterGQL,
-    route: ActivatedRoute,
     private router: Router,
-  ) {}
+    private me: MeGQL,
+  ) { }
 
   ngOnInit(): void {
     this.initForm();

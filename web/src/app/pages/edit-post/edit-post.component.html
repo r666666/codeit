@@ -1,0 +1,31 @@
+<form
+  class="form-wrap"
+  [formGroup]="form"
+  *ngIf="form"
+  (ngSubmit)="submitForm()"
+>
+  <mat-form-field>
+    <mat-label>Title</mat-label>
+    <input
+      matInput
+      formControlName="title"
+      placeholder="Title"
+      minlength="4"
+    >
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Text</mat-label>
+    <textarea
+      matInput
+      formControlName="text"
+      placeholder="Text"
+      rows="4"
+    ></textarea>
+  </mat-form-field>
+
+  <button
+    class="button"
+    type="submit"
+    [disabled]="!form.valid"
+  >Edit post</button>
+</form>

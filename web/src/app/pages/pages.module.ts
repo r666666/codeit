@@ -11,6 +11,8 @@ import { PageLogin } from './login/page-login.component';
 import { PageChangePassword } from './change-password/change-password.component';
 import { PageForgotPassword } from './forgot-password/page-forgot-password.component';
 import { PageCreatePost } from './create-post/page-create-post.component';
+import { PagePost } from './post/post.component';
+import { PageEditPost } from './edit-post/edit-post.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +22,8 @@ import { PageCreatePost } from './create-post/page-create-post.component';
     PageChangePassword,
     PageForgotPassword,
     PageCreatePost,
+    PagePost,
+    PageEditPost,
   ],
   imports: [
     CommonModule,

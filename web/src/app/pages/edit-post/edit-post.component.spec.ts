@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PageCreatePost } from './page-create-post.component';
+import { PageEditPost } from './edit-post.component';
 
-describe('CreatePagePost', () => {
-  let component: PageCreatePost;
-  let fixture: ComponentFixture<PageCreatePost>;
+describe('PageEditPost', () => {
+  let component: PageEditPost;
+  let fixture: ComponentFixture<PageEditPost>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PageCreatePost ]
+      declarations: [ PageEditPost ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PageCreatePost);
+    fixture = TestBed.createComponent(PageEditPost);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

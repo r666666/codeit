@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 
 import { MeGQL, LoginGQL } from 'src/generated/graphql';
 
@@ -16,7 +16,6 @@ export class PageLogin implements OnInit {
     private fb: FormBuilder,
     private login: LoginGQL,
     private me : MeGQL,
-    route: ActivatedRoute,
     private router: Router,
   ) {}
 
@@ -36,10 +35,7 @@ export class PageLogin implements OnInit {
       username: this.form.value.username,
       password: this.form.value.password
     }, {
-      update: (
-        cache,
-        value
-      ) => {
+      update: (cache, value) => {
         if (value.data?.login.user) {
           cache.writeQuery({
             query: this.me.document,

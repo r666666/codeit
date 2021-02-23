@@ -10,7 +10,7 @@ import { environment } from '../environments/environment';
 
 @NgModule()
 
-export class GraphQLModule {
+export class ApolloModule {
   cache: InMemoryCache;
   link: HttpLinkHandler;
   errorLink: ApolloLink;
@@ -18,7 +18,6 @@ export class GraphQLModule {
   constructor(
     private apollo: Apollo,
     private httpLink: HttpLink,
-    private router: Router
   ) {
     this.cache = new InMemoryCache({
       typePolicies: {

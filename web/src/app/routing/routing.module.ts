@@ -7,6 +7,8 @@ import { PageLogin } from '../pages/login/page-login.component';
 import { PageChangePassword } from '../pages/change-password/change-password.component';
 import { PageForgotPassword } from '../pages/forgot-password/page-forgot-password.component';
 import { PageCreatePost } from '../pages/create-post/page-create-post.component';
+import { PagePost } from '../pages/post/post.component';
+import { PageEditPost } from '../pages/edit-post/edit-post.component';
 
 export const ROUTES: Routes = [
   { path: '', component: PageDashboard },
@@ -14,7 +16,9 @@ export const ROUTES: Routes = [
   { path: 'login', component: PageLogin },
   { path: 'forgot-password', component: PageForgotPassword },
   { path: 'change-password/:token', component: PageChangePassword },
-  { path: 'create-post', component: PageCreatePost }
+  { path: 'create-post', component: PageCreatePost },
+  { path: 'post/:id', component: PagePost },
+  { path: 'edit-post/:id', component: PageEditPost }
 ];
 
 @NgModule({

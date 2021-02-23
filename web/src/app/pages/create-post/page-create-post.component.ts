@@ -23,12 +23,13 @@ export class PageCreatePost implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.initForm();
     this.me.fetch().subscribe(value => {
       if (!value.data.me) {
         this.router.navigate(['/login']);
       }
     });
+
+    this.initForm();
   }
 
   initForm() {

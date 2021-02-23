@@ -4,7 +4,6 @@ import { Apollo, QueryRef } from 'apollo-angular';
 
 import { PostsGQL } from 'src/generated/graphql';
 import { IPost } from '../../interfaces/post';
-import {InMemoryCache} from '@apollo/client/core';
 
 @Component({
   selector: 'app-dashboard',
@@ -15,14 +14,12 @@ export class PageDashboard implements OnInit, OnDestroy {
   posts: IPost[];
   cursor: any;
   querySubscription: QueryRef<any>;;
-  cache: InMemoryCache;
 
   constructor(
     private getPosts: PostsGQL,
     private apollo: Apollo
   ) {
     this.posts = [];
-    this.cache = new InMemoryCache();
   }
 
   ngOnInit() {
@@ -47,13 +44,13 @@ export class PageDashboard implements OnInit, OnDestroy {
     this.querySubscription
       .valueChanges
       .subscribe(({data}) => {
+        //console.log(data.posts);
         this.posts = data.posts;
-        console.log(data.posts);
       });
   }
 
   ngOnDestroy() {
-    this.apollo.client.clearStore();
+    //this.apollo.client.clearStore();
   } 
 
   loadPosts() {

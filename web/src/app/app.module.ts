@@ -8,7 +8,7 @@ import { AppComponent } from './app.component';
 import { ROUTES, RoutingModule } from './routing/routing.module';
 import { ComponentsModule } from './components/components.module';
 import { PagesModule } from './pages/pages.module';
-import { GraphQLModule } from './graphql.module';
+import { ApolloModule } from './graphql.module';
 
 @NgModule({
   declarations: [ AppComponent ],
@@ -20,7 +20,7 @@ import { GraphQLModule } from './graphql.module';
     RoutingModule,
     ComponentsModule,
     PagesModule,
-    GraphQLModule
+    ApolloModule
   ],
   providers: [],
   bootstrap: [ AppComponent ]

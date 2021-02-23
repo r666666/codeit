@@ -24,6 +24,8 @@ export class Vote extends BaseEntity {
   @PrimaryColumn()
   postId: number;
 
-  @ManyToOne(() => Post, (post) => post.vote)
+  @ManyToOne(() => Post, (post) => post.vote, {
+    onDelete: "CASCADE",
+  })
   post: Post;
 }

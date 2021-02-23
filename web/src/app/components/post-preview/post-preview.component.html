@@ -13,6 +13,15 @@
   </div>
   
   <div class="footer">
-  
+    <button
+      *ngIf="user && user.id === post.creatorId"
+      class="no-style"
+      (click)="handleDelete(post.id); $event.stopPropagation()"
+    >Delete</button>
+    <button
+      *ngIf="user && user.id === post.creatorId"
+      class="no-style"
+      (click)="handleEdit(post.id); $event.stopPropagation()"
+    >Edit</button>
   </div>
 </div>

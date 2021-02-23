@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 
-import {MeGQL, RegisterGQL} from 'src/generated/graphql';
+import { MeGQL, RegisterGQL } from 'src/generated/graphql';
 
 @Component({
   selector: 'app-register',
@@ -14,11 +14,10 @@ export class PageRegister implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private me : MeGQL,
     private register: RegisterGQL,
-    route: ActivatedRoute,
     private router: Router,
-  ) {}
+    private me: MeGQL,
+  ) { }
 
   ngOnInit(): void {
     this.initForm();
@@ -26,6 +25,7 @@ export class PageRegister implements OnInit {
 
   initForm() {
     this.form = this.fb.group({
+      email: ['', Validators.required],
       username: ['', Validators.required],
       password: ['', Validators.required]
     });
@@ -33,7 +33,10 @@ export class PageRegister implements OnInit {
 
   async submitForm() {
     this.register.mutate({ options: this.form.value }, {
-      update: (cache, value) => {
+      update: (
+        cache,
+        value
+      ) => {
         if (value.data?.register.user) {
           cache.writeQuery({
             query: this.me.document,

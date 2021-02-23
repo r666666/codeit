@@ -1,0 +1,29 @@
+@import 'src/assets/sass/variables';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  .posts-wrap {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    .card {
+      width: 60%;
+      margin-bottom: toRem(30px);
+
+      @media #{$max1199} {
+        width: 100%;
+      }
+      &:last-child {
+        margin-bottom: 0;
+      }
+      &.create {
+        font-size: toRem(16px);
+      }
+    }
+  }
+}

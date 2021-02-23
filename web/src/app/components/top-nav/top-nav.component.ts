@@ -3,6 +3,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { MeGQL, LogoutGQL } from 'src/generated/graphql';
+import { IUser } from '../../interfaces/user';
 
 @Component({
   selector: 'app-top-nav',
@@ -10,21 +11,22 @@ import { MeGQL, LogoutGQL } from 'src/generated/graphql';
   styleUrls: ['./top-nav.component.scss']
 })
 export class TopNavComponent implements OnInit, OnDestroy {
-  user: { id: number, username: string };
+  user: IUser;
   querySubscription: Subscription;
 
   constructor(
     private me: MeGQL,
     private logout: LogoutGQL,
-  ) {}
-
-  ngOnInit(): void {
+  ) {
     this.querySubscription = this.me.watch().valueChanges.subscribe(({ data }) => {
       this.user = data.me;
     });
   }
 
-  ngOnDestroy(): void {
+  ngOnInit() {
+  }
+
+  ngOnDestroy() {
     this.querySubscription.unsubscribe();
   }
 

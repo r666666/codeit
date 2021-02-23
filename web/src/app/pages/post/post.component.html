@@ -1,0 +1,12 @@
+<div class="header" *ngIf="post">
+  <div class="header-wrap">
+    <span class="creator mr-2">posted by {{ post.creator.username }}</span>
+    <span class="creadted-date">{{ post.createdAt }} ago</span>
+  </div>
+  <h3>{{ post.title }}</h3>
+</div>
+<div class="content" *ngIf="post">
+  <div class="text-wrap">
+    {{ post.text }}
+  </div>
+</div>

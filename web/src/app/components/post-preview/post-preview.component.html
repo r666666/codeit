@@ -1,0 +1,27 @@
+<app-voting [post]="post"></app-voting>
+
+<div class="post-body">
+  <div class="header">
+    <span
+      *ngIf="post.creator"
+      class="user"
+    >posted by {{ post.creator.username }}</span>
+  </div>
+  
+  <div class="content">
+    <div>{{ post.title }}</div>
+  </div>
+  
+  <div class="footer">
+    <button
+      *ngIf="user && user.id === post.creatorId"
+      class="no-style"
+      (click)="handleDelete(post.id); $event.stopPropagation()"
+    >Delete</button>
+    <button
+      *ngIf="user && user.id === post.creatorId"
+      class="no-style"
+      (click)="handleEdit(post.id); $event.stopPropagation()"
+    >Edit</button>
+  </div>
+</div>

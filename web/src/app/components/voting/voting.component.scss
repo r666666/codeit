@@ -1,0 +1,26 @@
+@import 'src/assets/sass/variables';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: toRem(60px);
+  margin: toRem(10px) 0;
+
+  .vote-btn {
+    height: toRem(24px);
+
+    &.active {
+      &.upvote {
+        .mat-icon {
+          color: $warning-color;
+        }
+      }
+      &.downvote {
+        .mat-icon {
+          color: $info-color;
+        }
+      }
+    }
+  }
+}

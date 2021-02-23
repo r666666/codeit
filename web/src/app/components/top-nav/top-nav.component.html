@@ -4,13 +4,15 @@
 </div>
 <div class="nav-group">
   <div class="nav-item">
-    <span class="username" *ngIf="user && user.username; else anonymous">
-      <button (click)="handleLogout()" class="no-style mr-4">Logout</button>
+    <div class="user-wrap" *ngIf="user && user.username; else anonymous">
+      <button (click)="handleLogout()" class="link no-style mr-4">Logout</button>
       {{ user.username }}
-    </span>
+    </div>
     <ng-template #anonymous>
-      <a class="mr-4" routerLink="/login">Login</a>
-      <a routerLink="/register">Register</a>
+      <div class="account-links">
+        <a class="link mr-4" routerLink="/login">Login</a>
+        <a class="link" routerLink="/register">Register</a>
+      </div>
     </ng-template>
   </div>
 </div>

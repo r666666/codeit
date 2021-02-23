@@ -1,0 +1,15 @@
+<button
+  class="no-style vote-btn upvote"
+  (click)="upvote()"
+  [ngClass]="{'active': post.voteStatus ? post.voteStatus === 1 : false}"
+>
+  <mat-icon>expand_less</mat-icon>
+</button>
+<span>{{ post.points }}</span>
+<button
+  class="no-style vote-btn downvote"
+  (click)="downvote()"
+  [ngClass]="{'active': post.voteStatus ? post.voteStatus === -1 : false}"
+>
+  <mat-icon>expand_more</mat-icon>
+</button>

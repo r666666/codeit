@@ -1,1 +1,14 @@
-<p>dashboard works!</p>
+<div class="posts-wrap">
+  <a class="card info create" routerLink="/create-post">
+    <span class="link">Create new post!</span>
+  </a>
+
+  <app-post-preview
+    *ngFor="let post of posts"
+    [post]="post"
+    class="card post-preview"
+    [routerLink]="'/post/' + post.id"
+  ></app-post-preview>
+
+  <button (click)="loadPosts()" class="pagination mt-4">Load more</button>
+</div>

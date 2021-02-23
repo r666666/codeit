@@ -1,27 +1,60 @@
-import {NgModule} from '@angular/core';
-import {APOLLO_OPTIONS } from 'apollo-angular';
-import {ApolloClientOptions, InMemoryCache} from '@apollo/client/core';
-import {HttpLink} from 'apollo-angular/http';
+import { NgModule } from '@angular/core';
+import { Router } from "@angular/router";
 
-const uri = 'http://localhost:4000/graphql'; // <-- add the URL of the GraphQL server here
-export function createApollo(httpLink: HttpLink): ApolloClientOptions<any> {
-  return {
-    link: httpLink.create({
-      uri,
+import { Apollo } from 'apollo-angular';
+import { ApolloLink, InMemoryCache } from '@apollo/client/core';
+import { HttpLink, HttpLinkHandler } from 'apollo-angular/http';
+import { onError } from '@apollo/client/link/error';
+
+import { environment } from '../environments/environment';
+
+@NgModule()
+
+export class ApolloModule {
+  cache: InMemoryCache;
+  link: HttpLinkHandler;
+  errorLink: ApolloLink;
+
+  constructor(
+    private apollo: Apollo,
+    private httpLink: HttpLink,
+  ) {
+    this.cache = new InMemoryCache({
+      typePolicies: {
+        Query: {
+          fields: {
+            posts: {
+              keyArgs: false,
+              merge(existing = [], incoming: any[], field) {
+                if (
+                  !field.variables.limit ||
+                  existing.every((val, index) => val.__ref === incoming[index].__ref)
+                ) {
+                  return [...incoming];
+                }
+                return [...existing, ...incoming];
+              },
+            }
+          }
+        }
+      },
+    });
+    this.link = this.httpLink.create({
+      uri: environment.serverAPI,
       withCredentials: true
-    }),
-    cache: new InMemoryCache(),
-    credentials: 'include',
-  };
-}
+    });
 
-@NgModule({
-  providers: [
-    {
-      provide: APOLLO_OPTIONS,
-      useFactory: createApollo,
-      deps: [HttpLink],
-    },
-  ],
-})
-export class GraphQLModule {}
+    this.errorLink = onError(({ graphQLErrors, networkError }) => {
+      if (graphQLErrors) {
+        graphQLErrors.map(({message}) => {
+        });
+      }
+      if (networkError) console.log(`[Network error]: ${networkError}`);
+    });
+
+    this.apollo.create({
+      link: this.errorLink.concat(this.link),
+      cache: this.cache,
+    } as any);
+  }
+}

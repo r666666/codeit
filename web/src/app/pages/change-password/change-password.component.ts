@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from "@angular/router";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { ActivatedRoute, Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { ChangePasswordGQL, MeGQL } from "../../../generated/graphql";
+import { ChangePasswordGQL, MeGQL } from '../../../generated/graphql';
 
 @Component({
   selector: 'app-change-password',
@@ -17,7 +17,7 @@ export class PageChangePassword implements OnInit {
     private route: ActivatedRoute,
     private fb: FormBuilder,
     private changePassword: ChangePasswordGQL,
-    private me : MeGQL,
+    private me: MeGQL,
     private router: Router,
   ) {
     this.route.params.subscribe(params => {
@@ -54,6 +54,6 @@ export class PageChangePassword implements OnInit {
       } else if (value.data?.changePassword.user) {
         this.router.navigate(['/']);
       }
-    })
+    });
   }
 }

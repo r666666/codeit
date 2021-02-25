@@ -15,7 +15,7 @@ export class PageLogin implements OnInit {
   constructor(
     private fb: FormBuilder,
     private login: LoginGQL,
-    private me : MeGQL,
+    private me: MeGQL,
     private router: Router,
   ) {}
 
@@ -43,8 +43,7 @@ export class PageLogin implements OnInit {
           });
         }
       }
-    }).subscribe(
-      value => {
+    }).subscribe(value => {
         if (value.data?.login.errors) {
           console.log(value.data.login.errors);
         } else if (value.data?.login.user) {

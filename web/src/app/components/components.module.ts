@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { RouterModule } from "@angular/router";
+import { RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 
 import { TopNavComponent } from './top-nav/top-nav.component';

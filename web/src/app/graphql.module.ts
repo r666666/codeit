@@ -24,7 +24,6 @@ import { environment } from '../environments/environment';
                     merge(existing = [], incoming, {
                       args: {limit, cursor}
                     }) {
-                      console.log(existing, incoming);
                       if (limit) {
                         return [...existing, ...incoming];
                       }

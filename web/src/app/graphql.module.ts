@@ -1,60 +1,48 @@
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { Router } from "@angular/router";
+import { BrowserModule } from '@angular/platform-browser';
 
-import { Apollo } from 'apollo-angular';
-import { ApolloLink, InMemoryCache } from '@apollo/client/core';
-import { HttpLink, HttpLinkHandler } from 'apollo-angular/http';
-import { onError } from '@apollo/client/link/error';
+import { InMemoryCache } from '@apollo/client/core';
+import { APOLLO_OPTIONS } from 'apollo-angular';
+import { HttpLink } from 'apollo-angular/http';
 
 import { environment } from '../environments/environment';
 
-@NgModule()
-
-export class ApolloModule {
-  cache: InMemoryCache;
-  link: HttpLinkHandler;
-  errorLink: ApolloLink;
-
-  constructor(
-    private apollo: Apollo,
-    private httpLink: HttpLink,
-  ) {
-    this.cache = new InMemoryCache({
-      typePolicies: {
-        Query: {
-          fields: {
-            posts: {
-              keyArgs: false,
-              merge(existing = [], incoming: any[], field) {
-                if (
-                  !field.variables.limit ||
-                  existing.every((val, index) => val.__ref === incoming[index].__ref)
-                ) {
-                  return [...incoming];
+@NgModule({
+  imports: [BrowserModule, HttpClientModule],
+  providers: [
+    {
+      provide: APOLLO_OPTIONS,
+      useFactory: (httpLink: HttpLink) => {
+        return {
+          cache: new InMemoryCache({
+            typePolicies: {
+              Query: {
+                fields: {
+                  posts: {
+                    keyArgs: ['type'],
+                    merge(existing = [], incoming, {
+                      args: {limit, cursor}
+                    }) {
+                      if (limit) {
+                        return [...existing, ...incoming];
+                      }
+                      return existing;
+                    }
+                  }
                 }
-                return [...existing, ...incoming];
-              },
+              }
             }
-          }
-        }
+          }),
+          link: httpLink.create({
+            uri: environment.serverAPI,
+            withCredentials: true
+          }),
+        };
       },
-    });
-    this.link = this.httpLink.create({
-      uri: environment.serverAPI,
-      withCredentials: true
-    });
+      deps: [HttpLink],
+    },
+  ],
+})
 
-    this.errorLink = onError(({ graphQLErrors, networkError }) => {
-      if (graphQLErrors) {
-        graphQLErrors.map(({message}) => {
-        });
-      }
-      if (networkError) console.log(`[Network error]: ${networkError}`);
-    });
-
-    this.apollo.create({
-      link: this.errorLink.concat(this.link),
-      cache: this.cache,
-    } as any);
-  }
-}
+export class ApolloModule {}

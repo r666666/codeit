@@ -1,6 +1,6 @@
 <button
   class="no-style vote-btn upvote"
-  (click)="upvote()"
+  (click)="upvote(); $event.stopPropagation()"
   [ngClass]="{'active': post.voteStatus ? post.voteStatus === 1 : false}"
 >
   <mat-icon>expand_less</mat-icon>
@@ -8,7 +8,7 @@
 <span>{{ post.points }}</span>
 <button
   class="no-style vote-btn downvote"
-  (click)="downvote()"
+  (click)="downvote(); $event.stopPropagation()"
   [ngClass]="{'active': post.voteStatus ? post.voteStatus === -1 : false}"
 >
   <mat-icon>expand_more</mat-icon>

@@ -38,6 +38,6 @@ export class TopNavComponent implements OnInit, OnDestroy {
           data: { me: null }
         });
       }
-    }).subscribe(value => {})
+    }).subscribe();
   }
 }

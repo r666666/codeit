@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
-import { UpdatePostGQL, PostGQL, MeGQL } from '../../../generated/graphql';
+import { UpdatePostGQL, PostGQL } from '../../../generated/graphql';
 import { IPost } from 'src/app/interfaces/post';
 
 @Component({
@@ -19,14 +19,15 @@ export class PageEditPost implements OnInit {
     private updatePost: UpdatePostGQL,
     private getPost: PostGQL,
     private fb: FormBuilder,
+    private router: Router,
   ) {
 
     this.route.params.subscribe(params => {
-      this.id = parseInt(params.id);
+      this.id = parseInt(params.id, 10);
     });
     this.getPost.fetch({ id: this.id }).subscribe(data => {
       this.initForm(data.data.post);
-    })
+    });
   }
 
   ngOnInit() {
@@ -44,8 +45,8 @@ export class PageEditPost implements OnInit {
       id: this.id,
       title: this.form.value.title,
       text: this.form.value.text
-    }).subscribe(data => {
-      console.log(data);
-    })
+    }).subscribe(value => {
+      this.router.navigate(['/']);
+    });
   }
 }

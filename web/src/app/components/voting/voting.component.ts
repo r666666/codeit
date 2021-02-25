@@ -10,7 +10,7 @@ import { PostsGQL, VoteGQL } from '../../../generated/graphql';
 })
 export class VotingComponent implements OnInit {
   @Input() post: IPost;
-  
+
   constructor(
     private vote: VoteGQL,
     private posts: PostsGQL
@@ -40,7 +40,7 @@ export class VotingComponent implements OnInit {
         const newPosts = posts.posts.map(p => {
           if (p.id === this.post.id) {
             let point = p.points;
-            return { ...p, points: point+=vote, voteStatus: vote }
+            return { ...p, points: point += vote, voteStatus: vote };
           }
           return p;
         });
@@ -50,6 +50,6 @@ export class VotingComponent implements OnInit {
           data: { posts: newPosts },
         });
       }
-    }).subscribe(value => {})
+    }).subscribe();
   }
 }

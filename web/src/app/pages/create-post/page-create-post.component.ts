@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Router } from "@angular/router";
+import { Router } from '@angular/router';
 
 import { CreatePostGQL, MeGQL, PostsGQL } from '../../../generated/graphql';
-import { IUser } from "../../interfaces/user";
+import { IUser } from '../../interfaces/user';
 
 @Component({
   selector: 'app-create-post',
@@ -45,11 +45,10 @@ export class PageCreatePost implements OnInit {
         update: (cache, value) => {
           cache.writeQuery({
             query: this.posts.document,
-            data: { posts: [] }
+            data: { posts: [value.data.createPost] }
           });
         }
-      }).subscribe(
-      value => {
+      }).subscribe(value => {
         this.router.navigate(['/']);
       }
     );

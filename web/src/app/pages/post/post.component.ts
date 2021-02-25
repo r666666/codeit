@@ -18,11 +18,11 @@ export class PagePost implements OnInit {
     private getPost: PostGQL,
   ) {
     this.route.params.subscribe(params => {
-      this.id = parseInt(params.id);
+      this.id = parseInt(params.id, 10);
     });
-    this.getPost.fetch({id:this.id}).subscribe(data => {
+    this.getPost.fetch({ id: this.id }).subscribe(data => {
       this.post = data.data.post;
-    })
+    });
   }
 
   ngOnInit() {

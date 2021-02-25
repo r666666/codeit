@@ -32,14 +32,10 @@ export class PostPreviewComponent implements OnInit {
   }
 
   handleDelete(id: number) {
-    this.deletePost.mutate({ id: id }, {
-        update(cache, data) {
-          
-        }
+    this.deletePost.mutate({ id }, {
+        update(cache, data) { }
       }
-    ).subscribe(data => {
-      console.log(data);
-    });
+    ).subscribe();
   }
 
   handleEdit(id: number) {
